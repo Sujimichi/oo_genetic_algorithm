@@ -87,7 +87,7 @@ class Configs
 
 	def encode_string
 		{
-			:gene_length => 20,
+			:gene_length => 9,
 			:gene_type => :binary_random,
 			:mutate_type => :bit_flip,
 			:population_size => 30,

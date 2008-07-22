@@ -118,16 +118,46 @@ module Fitness
 	end
 
 	def bin_string
-		bins = split_bin_into_n 2
+		bins = split_bin_into_n 3
 		puts bins.inspect
 		vals = bin_to_int bins
+		vals = vals.map { |v| v.abs}
 
-		h={0 => "x", 1 => "^", 2 => "^", 3 => 2}
+		x = 4
+		h={0 => x, 1 => "+", 2 => "-", 3 => "n"}
 		pheno = []
-		for v in vals
-
+	
+		vals.size.times do |i|
+			unless h[vals[i-1]] == "n"
+				if h[vals[i]] == "n"
+					pheno[i] = vals[i+1]
+				else
+					pheno[i] = h[vals[i]]
+				end
+			end
 		end
+		
+#		target = x+x
+		eq = pheno.compact.map.to_s
+		puts eq.inspect
+		failure = 10
+		@phenotype = pheno
 
+		begin
+			ans = eval eq 
+		rescue SyntaxError, NameError => boom
+				print "String doesn't compile: " + boom
+				ans = failure 
+		rescue Exception
+				print 'some more strange error'
+				p $!
+		end
+		
+		ans = failure if ans.nil?
+		
+		correct_ans = x+x
+		f = (correct_ans - ans).abs
+		f
 	end
 
 	def sim_eq_1 variables = nil
