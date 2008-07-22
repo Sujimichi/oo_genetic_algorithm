@@ -1,3 +1,7 @@
+#Configs; The function of this class return hashes of configuration settings
+#for use in the GA.  By simply changing which config is called changes the 
+#running of the GA.
+
 class Configs
 	def binary_basic
 		{

@@ -1,5 +1,4 @@
-
-#Provides non-evolutionary functions to the Evolution Modual
+#Provides non-evolutionary functions to the Evolution Module
 #e.g print to screen of gene pool
 module EvolutionHelper
 	def    puts_pop g

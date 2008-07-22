@@ -1,5 +1,5 @@
-#Provides various mechanisms for member selection, 
-#for use in the Population class
+#Module for extending the Population class 
+#adds member selection to the population
 module PopulationHelper
 
 	def random_member

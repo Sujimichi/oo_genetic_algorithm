@@ -1,11 +1,13 @@
+#The Genome class forms the section of the alg in which the genetic operations occur.
+#A Genome has DNA, an array of genes which can be recombined with 
+#other genomes to make new ones and can under go mutation according to @config settings
+
+
 require "os_path"
 require OSPath.path("modules/recombination.rb")
 require OSPath.path("modules/mutator.rb")
 require OSPath.path("modules/gene_initializer.rb")
 require OSPath.path("modules/simple_array_maths.rb")
-#The Genome class form the section of the alg in which the genetic operation occur.
-#A Genome has DNA, an array of genes which can be.  Genomes can be recombined with 
-#other genomes to make new ones and can under go mutation according to @config settings
 
 class Genome
 	include GeneInitializer

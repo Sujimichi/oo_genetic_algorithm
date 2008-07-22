@@ -1,3 +1,6 @@
+#A Population is defined in this algorithm as a collection of Individuals
+#The population is responsible for managing the individuals.
+
 require 'os_path'
 require 'evolution.rb'
 require 'individual.rb'
@@ -6,8 +9,6 @@ require 'population_monitor.rb'
 require OSPath.path("modules/population_heler.rb")
 
 
-#A Population is defined in this algorithm as a collection of Individuals
-#The population is responsible for managing the individuals.
 class Population < Evolution
 	include PopulationHelper
 

@@ -1,3 +1,4 @@
+#BinaryFunctions module is used in the Fitness Model for decoding binary genomes
 module BinaryFunctions
 	#take a bin genome and forces it into n seperate groups.  
 	#All groups will be equal in size except for the last one which 
@@ -50,10 +51,16 @@ module BinaryFunctions
 	end
 end
 
+#This Fitness module for use with the Individual class.  This allows for 
+#Individual.fitness to return the fitess based on the genome of the ind
+#and the fitness function selected in the configs
+
 module Fitness
 	include BinaryFunctions
 
 #----------------Fitness Function Helpers----------------#
+	#These function are not the actuall fitness functions 
+	#but handle the calling of them and return thier output
 	def fitness
 		@fitness = evaluate unless @fitness
 		@fitness
@@ -85,9 +92,15 @@ module Fitness
 
 
 #--------------------Fitness Functions--------------------#
+	#The following functions are the available fitnessfunctions 
+	#for this GA.  Others can be added easily as new methods 
+	#with are called by in the ga by setting 
+	#@confing[:fitness_function] => <my_fitess_func>
+
 	def genome_sum
 		self.genome.sequence.sum
 	end
+	alias max_ones genome_sum
 
 	def de_jong
 		require "fitness_functions\\de_jong.rb"
@@ -96,7 +109,7 @@ module Fitness
 		t
 	end
 
-	alias max_ones genome_sum
+
 
 	def bin_sim_eq_1
 		bins = split_bin_into_n 4
@@ -112,8 +125,6 @@ module Fitness
 		h={0 => "x", 1 => "^", 2 => "^", 3 => 2}
 		pheno = []
 		for v in vals
-			
-
 
 		end
 

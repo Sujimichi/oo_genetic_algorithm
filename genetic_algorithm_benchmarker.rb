@@ -1,3 +1,8 @@
+#function of this is to run a GA on a given config several times and get the average results
+#Thus providing information regarding the GA stability
+#Also produes prop of occurance of solution thou random search
+#
+#This is not a "nice" function which takes args for opperation. Make changes to the settings in the code
 require 'os_path'
 require 'population'
 require 'individual'

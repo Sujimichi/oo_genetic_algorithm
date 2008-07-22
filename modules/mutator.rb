@@ -1,4 +1,4 @@
-#This Modual provides various methods for mutation for use with Genome class 
+#This Module provides various methods for mutation for use with Genome class 
 #which one is run is defined in @config[:mutate_type]
 module Mutator
 	def mutate

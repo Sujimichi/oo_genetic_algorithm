@@ -4,10 +4,14 @@
 #which contains the genomes for recombination, and will return with a new_genome
 module Recombination
 
-	def recombine partner_genome #, self_fit = nil, part_fit = nil
+#-------------- Recombination Caller Function -------------- #
+
+	def recombine partner_genome 
 		genomes = [@dna,partner_genome.sequence]
 		send(@recomb_method, genomes)
 	end
+
+#----------------- Recombination Functions ----------------- #
 
 	def variable_genelengths_with_mutation genomes
 		new_genome = variable_genelengths genomes
@@ -38,7 +42,6 @@ module Recombination
 		new_genome = []
 		@gene_length.times do |gene|
 			@cross_over_rate >= rand ? new_genome[gene] = genomes[0][gene] : new_genome[gene] = genomes[1][gene]
-
 		end
 		new_genome
 	end
@@ -46,6 +49,8 @@ module Recombination
 	alias rand_point standard_microbial
 	alias microbial standard_microbial
 
+#-------------- Recombination Helper Functions ------------- #
+	#
 	def get_gene i, genomes
 		@fate = coin_toss ? 1 : 0
 		if i > (genomes[@fate].size - 1) #the -1 is needed as [0,1,2].size = 3 but index range is 0..2

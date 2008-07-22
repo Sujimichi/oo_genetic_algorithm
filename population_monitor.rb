@@ -1,5 +1,6 @@
+#This class is a rather experimental class designed to gather information
+#about the populations evolution during the running of the algorithm
 class PopulationMonitor
-
 
 	def initialize *args
 		@args = *args.join(" ")

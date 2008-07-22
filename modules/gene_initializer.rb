@@ -1,4 +1,4 @@
-#This modual provides different starting points for intitial gene pool
+#This module provides different starting points for intitial gene pool
 #Module for use with Genome class 
 module GeneInitializer
 

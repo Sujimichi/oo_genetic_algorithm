@@ -1,4 +1,5 @@
-#Indiviuals in this system consist of genomes which govern thier effectiveness
+#Individuals in this GA are the vessels for Genomes and provide extra, evolutionary non-essential functions.
+#The Genome of the individual will govern the indiviudals effectivness
 #The Individual is able to have interaction with other individuals e.g. mate, fight
 require 'os_path'
 require 'genome.rb'
@@ -13,6 +14,7 @@ class Individual
 		init_genome dna
 	end
 
+	#Evolution Essential Functions
 	def init_genome dna
 		@genome = Genome.new @config, dna
 	end
@@ -26,7 +28,7 @@ class Individual
 	end
 		
 	def mate partner
-		zygote = self.genome.recombine(partner.genome)
+		zygote = self.genome.recombine(partner.genome) 
 		offspring = Individual.new(@config, zygote)
 		offspring.genome.mutate if apply_mutation? 
 		offspring.parents= [self, partner]
@@ -43,6 +45,8 @@ class Individual
 		return self.victorious if (self.fitness > opponent.fitness)
 		return opponent.victorious
 	end
+
+	#Non Essential Functions (allow for gathering information about an individual)
 
 	def victorious
 		@victories ||= 0
