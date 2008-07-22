@@ -1,0 +1,74 @@
+%DE Jong Test Suite 
+function [FV]=dis_DeJongsuite(test,x)
+
+if nargin<2;
+    DeJonginfo = [-5.12,0.1,5.12,10,100,0,0;-2.048,0.1,2.048,12,1000,0,1;-5.12,0.1,5.12,10,100,-10,-5;...
+            -1.28,0.1,1.28,8,100,-3.5,0;-65.536,1,65.536,17,1000,0.9980,-32.0360];
+    if nargin<1;FV = DeJonginfo;else
+        FV = DeJonginfo(test,:);
+    end
+    return 
+end
+
+[x]=addRbias(x);%account for representational Bias
+
+if test==1 
+    [FV] = DeJong1(x);
+elseif test==2
+    [FV] = DeJong2(x);
+elseif test==3
+    [FV] = DeJong3(x);
+elseif test==4
+    [FV] = DeJong4(x);
+elseif test==5
+    [FV] = DeJong5(x);
+end
+
+function [FV]=DeJong1(x)
+%De Jong f1 Sphere Function
+%minimum = 0 @ x=0
+FV = sum(x.^2);
+
+function [FV]=DeJong2(x)
+%De Jong f2 Rosenbrock's Saddle
+%minimum = 0 @ x=1
+for i = 1:size(x)-1
+    FV(i) = 100 * (x(i)^2 - x(i+1))^2 + (1 - x(i))^2;
+end
+FV = sum(FV);
+
+function [FV]=DeJong3(x)
+%De Jong f3 Step function
+%minimum = -10 @ x=[-5:-5.12]
+FV = sum(round(x)) ;
+
+function [FV]=DeJong4(x)
+%De Jong f4 Quartic
+x=x';
+FV = sum(((x.^4).*[1:size(x,2)]) + (randn(1:size(x,2))));
+% FV = sum([1:size(x,2)].*x.^2 + randn(1:size(x,2)));
+
+function [FV]=DeJong5(x)
+%De Jong f5 Shekel's Foxholes
+%minimum = 0.9980 @ x=-32.0360
+a = -32:16:32;
+ai=[mod([1:25]-1,5)+1;1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5];
+
+for i = 1:25
+    for j = 1:2
+        n(j) = (x(j) - a(1,ai(j,i))) ^6 ;
+    end
+    m(i)=1/(i+sum(n));
+end
+FV = 1/(0.002+sum(m));
+
+
+function [x]=addRbias(x)
+r=[0.0930,0.0774,0.0391,0.0544,0.0216,0.0559,0.0337,0.0731,0.0278,0.0399];
+%numbers initially drawn at random and fixed thought ALL experiments
+%(rand(1,10)*0.1)
+x=x+r(1,1:size(x,1))';
+%offsets the optimal point away from x=0 in each dimention according to the
+%values in r
+
+
