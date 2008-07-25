@@ -121,32 +121,30 @@ module Fitness
 		bins = split_bin_into_n 3
 		puts bins.inspect
 		vals = bin_to_int bins
-		vals = vals.map { |v| v.abs}
+		#vals = vals.map { |v| v.abs}
 
 		x = 4
-		h={0 => x, 1 => "+", 2 => "-", 3 => "n"}
+		h={0 => "n", 1 => "+", 3 => "-", 2 => "n"}
 		pheno = []
 	
 		vals.size.times do |i|
-			unless h[vals[i-1]] == "n"
-				if h[vals[i]] == "n"
-					pheno[i] = vals[i+1]
-				else
-					pheno[i] = h[vals[i]]
-				end
+			if h[vals[i]] == "n"
+				pheno[i] = vals[i+1]
+			else
+				pheno[i] = h[vals[i]]
 			end
 		end
 		
 #		target = x+x
 		eq = pheno.compact.map.to_s
-		puts eq.inspect
+#		puts eq.inspect
 		failure = 10
-		@phenotype = pheno
+		
 
 		begin
 			ans = eval eq 
 		rescue SyntaxError, NameError => boom
-				print "String doesn't compile: " + boom
+#				print "String doesn't compile: " + boom
 				ans = failure 
 		rescue Exception
 				print 'some more strange error'
@@ -154,9 +152,9 @@ module Fitness
 		end
 		
 		ans = failure if ans.nil?
-		
-		correct_ans = x+x
-		f = (correct_ans - ans).abs
+		@phenotype = [vals, ans]
+		correct_ans = 1
+		f = ans
 		f
 	end
 

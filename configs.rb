@@ -91,10 +91,10 @@ class Configs
 			:gene_type => :binary_random,
 			:mutate_type => :bit_flip,
 			:population_size => 30,
-			:mutation_rate => 0.2,
+			:mutation_rate => 0.3,
 			:cross_over_rate => 0.5,
 			:recomb_method => :variable_genelengths_with_mutation,
-			:generations => 1000,
+			:generations => 5000,
 			:fitness_function => :bin_string,
 			:fitness_goal => 0,
 			:monitor_population => true
