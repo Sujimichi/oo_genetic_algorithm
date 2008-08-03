@@ -10,8 +10,8 @@ require 'family_tree.rb'
 #@config = Configs.new.string
 #@config = Configs.new.benchmark
 #@config = Configs.new.integer_basic
-#@config = Configs.new.binary_to_int
-@config = Configs.new.encode_string
+@config = Configs.new.binary_to_int
+#@config = Configs.new.encode_string
 
 p = Population.new(@config)
 p.evolve :quiet => true

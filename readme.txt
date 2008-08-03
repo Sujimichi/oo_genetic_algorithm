@@ -1,8 +1,30 @@
-Genetic Algorithm Tool Kit - Jeremy Comer
+﻿Genetic Algorithm Tool Kit - Jeremy Comer
 
-This is a project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than i was orignally planning.  
+This is a project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  
 
-What is it.  Basically a GA which has been designed to run under many different paramiters all of which are configurable from a sinlge config hash which and population is passed before starting evolution.
+What is it.  Basically a GA which has been designed to run under many different parameters all of which are configurable from a single config hash.  The purpose of this GA is not to run in the best possible time.  My aim is to make a experimental framework that allows easy observation and alteration of evolution.  
 
-The Fitness functions which are present at the minute are just realtivly simple tests eg getting the ga to solve x,y,z in a simultainus equation.
-More can be added and it is mi intention to allow fitness functions to be passed as blocks.  
+The Fitness functions which are present at the minute are just relativity simple tests e.g. getting the ga to solve x,y,z in a simultaneous equation.
+More can be added and it is my intention to allow fitness functions to be passed as blocks at some point.
+
+This was my first GA implemented in a OO language and it is very “Biology” inspired.  As with most GA's we deal with a population of individuals, in this design individuals are more than just genomes, they house genomes but also provide functions to define the actions of an individual in the population (e.g “fight, “mate”, “fitness”).  The model of the Genomes provides functions to enable the actions of genomes (“recombine”, “sequence”).  
+
+dna = individual_1.genome.sequence
+
+offspring_dna = individual_1.genome.recombine individual_1.genome
+
+offspring  = individual_1.mate individual_2
+
+p = population.new
+p.evolve
+
+I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.  
+
+The class population_monitor is a bit experimental.  It is used to track the progress of evolution in order to determine apres evolution what the fittest Genome was and what was the earliest generation that it occurred.  This is a prerequisite to being able to pass the fittest Individual to the Family Tree maker after evolution.    
+
+ruby runner.rb will kick it off.  Edit runner.rb to change which config is loaded, modify configs.rb to add more configs or change existing ones.  
+
+
+
+
+
