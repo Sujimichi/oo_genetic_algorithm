@@ -1,5 +1,5 @@
-#This Modual for use with the Population Class is concerned
-#with the higher level opperation of evolution.  This modual essentially 
+#This class, for use with the Population Class, is concerned
+#with the higher level opperation of evolution.  This class essentially 
 #just performs the main evolutionary loop and provides the fork between 
 #standard and microbial evolution
 
