@@ -20,6 +20,9 @@ if @config.has_key? :monitor_population
 	population_monitor = p.get_monitor
 	population_monitor.view_results
 	best = population_monitor.who_best?
+	population_monitor.graph_mean_fit
+	population_monitor.graph_genetic_convergence
+
 
 
 	puts "--------------------\n\n"
