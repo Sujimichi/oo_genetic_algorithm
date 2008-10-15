@@ -1,7 +1,7 @@
 #Provides non-evolutionary functions to the Evolution Module
 #e.g print to screen of gene pool
 module EvolutionHelper
-	def    puts_pop g
+	def puts_pop g
 		puts "Population at Generation #{g}"
 		for individual in @population
 			puts "Individual no #{@population.index individual}'s Genome:\t #{genome_for_print individual.genome}"

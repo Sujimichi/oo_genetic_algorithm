@@ -2,54 +2,60 @@
 #with the higher level opperation of evolution.  This class essentially 
 #just performs the main evolutionary loop and provides the fork between 
 #standard and microbial evolution
-
-require "os_path"
-require OSPath.path("modules/evolution_helper.rb")
 class Evolution
 	include EvolutionHelper
 
-	def evolve arg_hash = {}
-		@args = (arg_hash.class.inspect == "Hash") ? arg_hash : {}
+	def initialize config, population
+		@config = config 
+		@population = population
+		@population_monitor = PopulationMonitor.new(@config[:monitor_population]) if @config[:monitor_population]
+	end
+
+	def full_cycle 
 		@config[:generations].times do |generation|
 			@generation = generation
-			puts "\nGeneration: #{@generation + 1}" unless @args[:quiet]  
-			@population_monitor.process(self) if @population_monitor
-			
-			if @config[:recomb_method].to_s =~ /microbial/
-				old, new = lower_life_form_evolution
-			else
-				old, new = higher_life_form_evolution
-			end
-		
-			self.replace_individual( old, new ) unless old == new
+			puts "\nGeneration: #{generation + 1}" if $verbose
+			process_generation
 		end
+		puts "done"
+	end
+
+	def process_generation
+		@population_monitor.process(@population) if @population_monitor
+		if @config[:recomb_method].to_s =~ /microbial/
+			old, new = lower_life_form_evolution
+		else
+			old, new = higher_life_form_evolution
+		end
+		@population.replace_individual( old, new ) unless old == new
+		print "."
 	end
 
 	# Standard Evolution; 2 members produce an offspring which then has to win 
 	# a competition with a random member to gain addmitance to the population
 	def higher_life_form_evolution
-		lover_1, lover_2 = self.get_mates
+		lover_1, lover_2 = @population.get_mates
 		offspring = lover_1.mate lover_2
 		offspring.dob = @generation
-		contestant = self.random_member
+		contestant = @population.random_member
 		winner = offspring.fight(contestant) # <- Competition step for standard evolution
 		if @population_monitor
 			@population_monitor.record_mutation if offspring.mutant?
 		end
-		puts_winner(offspring, winner, contestant) unless @args[:quiet]  
+		puts_winner(offspring, winner, contestant) if $verbose  
 		[contestant, winner]
 	end
 
 	# Microbial Evolution; 2 Members compete to partially overwrite the others DNA
 	def lower_life_form_evolution
-		lover_1, lover_2 = sort_by_fitness self.get_mates
+		lover_1, lover_2 = sort_by_fitness @population.get_mates
 		raise "fitness sort fail #{lover_1.fitness}, #{lover_2.fitness}" if lover_1.fitness < lover_2.fitness
 		offspring = lover_1.mate lover_2
 		offspring.dob = @generation
 		if @population_monitor
 			@population_monitor.record_mutation if offspring.mutant?
 		end
-		puts_microbial_winner(lover_1, lover_2) unless @args[:quiet]  
+		puts_microbial_winner(lover_1, lover_2) if $verbose  
 		[lover_2, offspring]
 	end
 
@@ -61,6 +67,10 @@ class Evolution
 		new = []
 		sort_func.each {|f| new << memb_array[f.last] }
 		new		
+	end
+		
+	def get_monitor
+		@population_monitor
 	end
 
 end

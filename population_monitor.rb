@@ -2,12 +2,9 @@
 #about the populations evolution during the running of the algorithm
 class PopulationMonitor
 	attr_accessor :stats, :history
-	require 'rubygems'
-	require 'gruff'
 
 	def initialize *args
 		@args = *args.join(" ")
-		@stats = []
 		@history = []
 	end
 	#=--------------Code Called During GA Run-Time--------------=#
@@ -24,7 +21,8 @@ class PopulationMonitor
 	#	#=--------------Statistic Generating code----------------=#	
 
 	def make
-		@history.each {|generation| make_stats(generation) }
+		@stats = []
+		@history.each {|generation| make_stats(generation) } 
 		when_best
 		self
 	end
@@ -92,17 +90,11 @@ class PopulationMonitor
 	def show_mutations
 		puts "Number of Mutations: #{@mutations}"
 	end
+	#=-----------------------------------------------------------=#
 
-	#=--------------------Graph Functions------------------------=#	
-	def graph_mean_fit
-		mean_fit = @stats.map {|gs| gs[:mean_fit]}
-		g = Gruff::Line.new
-		g.title = "Mean Fitness Over Time" 
-		g.data("Mean Fitness", mean_fit)
-		g.write('mean_fit_over_time.png')
-	end
 
-	def graph_genetic_convergence
+
+	def genetic_convergence
 		gene_length = @history.first.first.genome.sequence.size
 		genome_std = []
 		@history.each do |generation|
@@ -112,16 +104,8 @@ class PopulationMonitor
 			end
 			genome_std << gene_score
 		end
-#		g = Gruff::Line.new
-#		g.data("Mean Fitness", genome_std)
-#		g.write('std_over_time.png')
-#		puts genome_std.inspect
-
+		genome_std
 	end
-
-
-	#=-----------------------------------------------------------=#
-
 
 
 	def array_sum arr
@@ -131,7 +115,6 @@ class PopulationMonitor
 	end
 
 	def variance(population)
-		raise :foo
 		n = 0
 		mean = 0.0
 		s = 0.0
@@ -152,41 +135,5 @@ class PopulationMonitor
 	def standard_deviation(population)
 		Math.sqrt(variance(population))
 	end
-
-
-
-	#=-Obsolete-=#
-=begin
-	def mean_over_gens
-		mean = []
-		for gens in @stats
-
-			mean << round_to_dp(gens[:mean_fit], 2)
-		end
-		puts mean
-	end
-
-	def round_to_dp f, dp
-		f = f.to_f if f.class.inspect == "Fixnum"
-		(raise 'not float') if f.class.inspect != "Float"
-		s = f.to_s.split("")
-		p_pos = s.index(".")
-		if s.size - (p_pos+1) <= dp
-			return f
-		end
-		out = s[0..p_pos+dp+1]
-		r = out.pop
-		if r.to_i > 5
-			unless out[out.size] == "."
-				out[out.size-1] = (out[out.size-1].to_i + 1).to_s
-			else
-				out[out.size-2] = (out[out.size-2].to_i + 1).to_s
-			end
-		end
-	out = out.join.to_f
-	return out
-	end
-=end
-
 end
 

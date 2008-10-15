@@ -2,13 +2,6 @@
 #A Genome has DNA, an array of genes which can be recombined with 
 #other genomes to make new ones and can under go mutation according to @config settings
 
-
-require "os_path"
-require OSPath.path("modules/recombination.rb")
-require OSPath.path("modules/mutator.rb")
-require OSPath.path("modules/gene_initializer.rb")
-require OSPath.path("modules/simple_array_maths.rb")
-
 class Genome
 	include GeneInitializer
 	include Mutator

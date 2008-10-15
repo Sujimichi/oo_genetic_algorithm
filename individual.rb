@@ -1,9 +1,6 @@
 #Individuals in this GA are the vessels for Genomes and provide extra, evolutionary non-essential functions.
 #The Genome of the individual will govern the indiviudals effectivness
 #The Individual is able to have interaction with other individuals e.g. mate, fight
-require 'os_path'
-require 'genome.rb'
-require OSPath.path("modules/fitness.rb")
 
 class Individual
 	include Fitness

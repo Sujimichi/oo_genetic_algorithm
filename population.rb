@@ -1,21 +1,12 @@
 #A Population is defined in this algorithm as a collection of Individuals
 #The population is responsible for managing the individuals.
 
-require 'os_path'
-require 'evolution.rb'
-require 'individual.rb'
-require 'configs.rb'
-require 'population_monitor.rb'
-require OSPath.path("modules/population_helper.rb")
-
-
-class Population < Evolution
+class Population 
 	include PopulationHelper
 
 	def initialize config = nil
 		@config = config if config
 		@config ||= Configs.new.binary_basic
-		@population_monitor = PopulationMonitor.new(@config[:monitor_population]) if @config[:monitor_population]
 		new_population
 	end
 
@@ -50,10 +41,6 @@ class Population < Evolution
 			j = self.random_member
 		end
 		return [ i, j ]
-	end
-
-	def get_monitor
-		@population_monitor
 	end
 
 	def generation
