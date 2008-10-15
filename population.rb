@@ -6,7 +6,7 @@ require 'evolution.rb'
 require 'individual.rb'
 require 'configs.rb'
 require 'population_monitor.rb'
-require OSPath.path("modules/population_heler.rb")
+require OSPath.path("modules/population_helper.rb")
 
 
 class Population < Evolution

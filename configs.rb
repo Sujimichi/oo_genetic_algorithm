@@ -59,7 +59,7 @@ class Configs
 			:recomb_method => :rand_point,
 			:generations => 1000,
 			:fitness_function => :bin_sim_eq_1,
-			:monitor_population => true
+			#:monitor_population => false
 		}
 	end
 

@@ -12,23 +12,29 @@ require 'family_tree.rb'
 #@config = Configs.new.integer_basic
 @config = Configs.new.binary_to_int
 #@config = Configs.new.encode_string
+@config.merge!({:monitor_population => true})
 
 p = Population.new(@config)
 p.evolve :quiet => true
+stats = p.get_monitor.make.results[:stats]
+puts stats.map{|r| r[:mean_fit]}.inspect
 
-if @config.has_key? :monitor_population
-	population_monitor = p.get_monitor
-	population_monitor.view_results
-	best = population_monitor.who_best?
-	population_monitor.graph_mean_fit
-	population_monitor.graph_genetic_convergence
+#puts pm.best_individual
 
 
+
+=begin
+#@config.delete :monitor_population
+if @config.has_key?(:monitor_population) && @config[:monitor_population] == true
+	pm = p.get_monitor
+	pm.view_results
+	best = pm.who_best?
+	pm.graph_mean_fit
+	pm.graph_genetic_convergence
 
 	puts "--------------------\n\n"
 	t = FamilyTree.new(best)
 	t.make_tree
 	t.pp_tree
-
 end
-
+=end

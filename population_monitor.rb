@@ -1,21 +1,18 @@
 #This class is a rather experimental class designed to gather information
 #about the populations evolution during the running of the algorithm
 class PopulationMonitor
+	attr_accessor :stats, :history
 	require 'rubygems'
 	require 'gruff'
 
 	def initialize *args
 		@args = *args.join(" ")
-		@generation_stats = []
-		@pop_store = []
-
+		@stats = []
+		@history = []
 	end
 	#=--------------Code Called During GA Run-Time--------------=#
 	def process current_population
-		@pop_store << current_population.get_pop.clone
-		#@current_population = current_population.get_pop
-		#make_generation_stats
-		#@current_population = nil
+		@history << current_population.get_pop.clone
 	end
 
 	def record_mutation
@@ -23,8 +20,16 @@ class PopulationMonitor
 		@mutations += 1
 	end
 	#=--------------Code Called After GA Run-Time--------------=#		
+	#
+	#	#=--------------Statistic Generating code----------------=#	
 
-	def make_generation_stats population
+	def make
+		@history.each {|generation| make_stats(generation) }
+		when_best
+		self
+	end
+
+	def make_stats population
 		running_score = 0
 		for individual in population
 			f = individual.fitness
@@ -32,62 +37,53 @@ class PopulationMonitor
 			best ||= {:individual => individual, :fitness => f}
 			best = {:individual => individual, :fitness => f} if f > best[:fitness]
 		end
-		@generation_stats << {
-			:gen_no => @generation_stats.size + 1, 
+		@stats << {
+			:gen_no => @stats.size + 1, 
 			:best_individual => best[:individual], 
 			:mean_fit => (running_score / population.size)
 		}
 	end
 
-	def view_results
-		for pop in @pop_store
-			make_generation_stats(pop)
-		end
-		show_best
-		show_mutations unless @muations
-	end
-
 	def when_best
-		@generation_stats.first[:best_individual].fitness_target ||= 5000
-		fitness_target = @generation_stats.first[:best_individual].fitness_target + 0.00
-		earliest_occurance = 0
-		print "Checking for earliest occurance of Fittest Genome"
-		for generation in @generation_stats
+		@stats.first[:best_individual].fitness_target ||= 5000
+		fitness_target = @stats.first[:best_individual].fitness_target.to_f
+		@earliest_occurance = 0
+		for generation in @stats
 			dif = (fitness_target - generation[:best_individual].fitness).abs
 			best_dif ||= dif
-
 			if dif < best_dif
 				best_dif = dif
-				earliest_occurance = generation[:gen_no]
-				print "*"
+				@earliest_occurance = generation[:gen_no]
 			end
-			print "."
-
 		end
-		puts "Done"
-		@best = @generation_stats[earliest_occurance-1][:best_individual]
-		earliest_occurance
+		@best = @stats[@earliest_occurance-1][:best_individual]
+		@earliest_occurance
 	end
-
-	def get_results
-		when_best
-		results = {
-			:mutations => @mutaions,
-			:offspring_wins => @offspring_wins,
-			:generation_stats => @generation_stats,
-			:best => @best
-		}
+	#	#=--------------Data return functions----------------=#	
+	def results
+		results ={:stats => @stats, :best => @best}
+		results.merge!({:mutations => @mutations}) if @mutations
+		results.merge!({:offspring_wins => @offspring_wins}) if @off_spring_wins
+		results
+	end
+	def best_individual
+		@best
 	end
 
 	#=--------------Code which outputs to screen----------------=#	
+	def display_results
+		make
+		show_best
+		show_mutations unless @mutations
+	end
 
 	def show_best
-		earliest_occurance = when_best
+		when_best unless @earliest_occurance
 		msg = "\n\nWinning Genome\nGenome:   #{@best.genome.sequence.join(", ")}"
 		msg << "\nName:\t\t#{@best.name}"
 		msg << "\nPhenotype:\t#{@best.phenotype.class == Array ? @best.phenotype.join(", ") : @best.phenotype}"
 		msg << "\nFitness:\t#{@best.fitness}"
-		msg << "\nGeneration:\t#{earliest_occurance}"
+		msg << "\nGeneration:\t#{@earliest_occurance}"
 
 		msg << "\n#{Array.new(20){"-"}.to_s}\n"
 		puts msg
@@ -99,7 +95,7 @@ class PopulationMonitor
 
 	#=--------------------Graph Functions------------------------=#	
 	def graph_mean_fit
-		mean_fit = @generation_stats.map {|gs| gs[:mean_fit]}
+		mean_fit = @stats.map {|gs| gs[:mean_fit]}
 		g = Gruff::Line.new
 		g.title = "Mean Fitness Over Time" 
 		g.data("Mean Fitness", mean_fit)
@@ -107,9 +103,9 @@ class PopulationMonitor
 	end
 
 	def graph_genetic_convergence
-		gene_length = @pop_store.first.first.genome.sequence.size
+		gene_length = @history.first.first.genome.sequence.size
 		genome_std = []
-		@pop_store.each do |generation|
+		@history.each do |generation|
 			gene_score = []
 			gene_length.times do |i|
 				gene_score[i] = standard_deviation( generation.map {|indiv| indiv.genome.sequence[i] } )
@@ -119,7 +115,7 @@ class PopulationMonitor
 #		g = Gruff::Line.new
 #		g.data("Mean Fitness", genome_std)
 #		g.write('std_over_time.png')
-		puts genome_std.inspect
+#		puts genome_std.inspect
 
 	end
 
@@ -127,9 +123,6 @@ class PopulationMonitor
 	#=-----------------------------------------------------------=#
 
 
-	def who_best?
-		@best
-	end
 
 	def array_sum arr
 		sum = 0
@@ -138,6 +131,7 @@ class PopulationMonitor
 	end
 
 	def variance(population)
+		raise :foo
 		n = 0
 		mean = 0.0
 		s = 0.0
@@ -165,7 +159,7 @@ class PopulationMonitor
 =begin
 	def mean_over_gens
 		mean = []
-		for gens in @generation_stats
+		for gens in @stats
 
 			mean << round_to_dp(gens[:mean_fit], 2)
 		end
