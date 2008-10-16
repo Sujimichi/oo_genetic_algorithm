@@ -1,16 +1,18 @@
 class GeneticAlgorithm
 
-path = '~/coding/j_projects/genetic_pogramming/genetic-algorithm-tool-kit/'
-require path + 'os_path.rb'
+	#path = '~/coding/j_projects/genetic_pogramming/genetic-algorithm-tool-kit/' 	#workpath}
 
-requires = ['configs.rb', 'modules/evolution_helper.rb','modules/population_helper.rb','modules/recombination.rb','modules/mutator.rb','modules/gene_initializer.rb','modules/simple_array_maths.rb','modules/fitness.rb','evolution.rb','individual.rb','population.rb','family_tree.rb', 'population_monitor.rb', 'genome.rb']
+	path = '~/programming/genetic-algorithm-tool-kit/'														#homepath}
+	require path + 'os_path.rb'
 
-requires.each do |item|
-	require OSPath.path(path + item)
-end
+	requires = ['configs.rb', 'modules/evolution_helper.rb','modules/population_helper.rb','modules/recombination.rb','modules/mutator.rb','modules/gene_initializer.rb','modules/simple_array_maths.rb','modules/fitness.rb','evolution.rb','individual.rb','population.rb','family_tree.rb', 'population_monitor.rb', 'genome.rb']
 
-$verbose = false
-attr_accessor :population
+	requires.each do |item|
+		require OSPath.path(path + item)
+	end
+
+	$verbose = false
+	attr_accessor :population
 
 	def initialize
 		@config = Configs.new.binary_to_int
