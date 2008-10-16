@@ -1,21 +1,13 @@
 class GeneticAlgorithm
 
-require '~/programming/genetic-algorithm-tool-kit/os_path.rb'
-require '~/programming/genetic-algorithm-tool-kit/configs.rb'
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/evolution_helper.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/population_helper.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/recombination.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/mutator.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/gene_initializer.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/simple_array_maths.rb')
-require OSPath.path('~/programming/genetic-algorithm-tool-kit/modules/fitness.rb')
+path = '~/coding/j_projects/genetic_pogramming/genetic-algorithm-tool-kit/'
+require path + 'os_path.rb'
 
-require '~/programming/genetic-algorithm-tool-kit/evolution.rb'
-require '~/programming/genetic-algorithm-tool-kit/individual.rb'
-require '~/programming/genetic-algorithm-tool-kit/population.rb'
-require '~/programming/genetic-algorithm-tool-kit/family_tree.rb'
-require '~/programming/genetic-algorithm-tool-kit/population_monitor.rb'
-require '~/programming/genetic-algorithm-tool-kit/genome.rb'
+requires = ['configs.rb', 'modules/evolution_helper.rb','modules/population_helper.rb','modules/recombination.rb','modules/mutator.rb','modules/gene_initializer.rb','modules/simple_array_maths.rb','modules/fitness.rb','evolution.rb','individual.rb','population.rb','family_tree.rb', 'population_monitor.rb', 'genome.rb']
+
+requires.each do |item|
+	require OSPath.path(path + item)
+end
 
 
 
