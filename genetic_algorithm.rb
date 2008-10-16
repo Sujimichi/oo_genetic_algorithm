@@ -9,17 +9,12 @@ requires.each do |item|
 	require OSPath.path(path + item)
 end
 
-
-
 $verbose = false
-
 attr_accessor :population
 
 	def initialize
 		@config = Configs.new.binary_to_int
-		@config.merge!({:monitor_population => true})
 		reset
-		@evolution = Evolution.new(@config, @population)
 	end
 
 	def run
@@ -31,19 +26,24 @@ attr_accessor :population
 	end
 
 	def reset
+		@population_monitor = PopulationMonitor.new
 		@population = Population.new(@config)
+		@evolution = Evolution.new(@config, @population,@population_monitor)
 	end
 
 	def results
-		pm = @evolution.get_monitor.make
-		pm.results
+		@evolution.get_monitor.make.results
 	end
 
 	def population_tree
-		results = @evolution.get_monitor.make.results
 		t = FamilyTree.new(results[:best])
 		t.make_tree
 		t.pp_tree
+	end
+	alias tree population_tree
+
+	def mean_fit_data
+		results[:stats].map{|s| s[:mean_fit] }
 	end
 
 end

@@ -5,10 +5,10 @@
 class Evolution
 	include EvolutionHelper
 
-	def initialize config, population
+	def initialize config, population, population_monitor = nil
 		@config = config 
 		@population = population
-		@population_monitor = PopulationMonitor.new(@config[:monitor_population]) if @config[:monitor_population]
+		@population_monitor = population_monitor
 	end
 
 	def full_cycle 
