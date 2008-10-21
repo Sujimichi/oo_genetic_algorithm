@@ -35,7 +35,7 @@ An Individual is the house for a Genome and have functions to facilitate competi
 The Fitness module is included to provide a fitness method on an individual which returns a score based on the Individuals Genome and chosen fitness function.
   ind.fitness
 
-===Fitness module
+====Fitness module
 This is really the core of the whole process from the point of producing something interesting or worthwhile using a GA.  Which function is called is set in the configs and a fitness function should take a genome and return a score.  
 Atm there is just a set of simple fitness functions e.g. evolve x,y,z for a simultaneous equation
 More can be added....
