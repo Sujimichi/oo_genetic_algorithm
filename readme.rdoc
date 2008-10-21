@@ -1,4 +1,5 @@
-﻿Object Oriented Genetic Algorithm - Jeremy Comer
+﻿= Object Oriented Genetic Algorithm
+  by Jeremy Comer
 
 This is a project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  
 
@@ -9,14 +10,14 @@ More can be added and it is my intention to allow fitness functions to be passed
 
 This was my first GA implemented in a OO language and it is very “Biology” inspired.  As with most GA's we deal with a population of individuals, in this design individuals are more than just genomes, they house genomes but also provide functions to define the actions of an individual in the population (e.g “fight, “mate”, “fitness”).  The model of the Genomes provides functions to enable the actions of genomes (“recombine”, “sequence”).  
 
-dna = individual_1.genome.sequence
+  dna = individual_1.genome.sequence
 
-offspring_dna = individual_1.genome.recombine individual_1.genome
+  offspring_dna = individual_1.genome.recombine individual_1.genome
 
-offspring  = individual_1.mate individual_2
+  offspring  = individual_1.mate individual_2
 
-p = population.new
-p.evolve
+  p = population.new
+  p.evolve
 
 I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.  
 
