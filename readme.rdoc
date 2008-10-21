@@ -25,17 +25,19 @@ The class population_monitor is a bit experimental.  It is used to track the pro
 ruby runner.rb will kick it off.  Edit runner.rb to change which config is loaded, modify configs.rb to add more configs or change existing ones.  
 
 
-h3. Main Classes 
+== Classes and Modules
 
+* Population class -> A population is a collection of Individuals and has methods that do population centric actions
+  - PopulationHelper modules -> Provides more functions to the population class. May be depricated and moved to population class 
 
-h4. Modules
+* Individual class -> An Individual is the house for a Genome.  Individuals have functions to facilite competition and breeding
+  - Fitness module -> Provides different fitness evaluations which result in a numerical score for a genome.  
 
-recombintation	       -> 
-gene_initialize	       -> Defines different methods for creating an intial genome
-mutator		       -> Defines different methods for aplying mutation to a genome
+* Genome class
+  - Recombintation class -> Defines different methods for generting a new genome for "parent" genomes
+  - GeneInitialize class -> Defines different methods for creating an intial genome
+  - Mutator class-> Defines different methods for aplying mutation to a genome
 
-population_helper      -> Provides more functions to the population class. May be depricated and moved to 
-			  population class 
-
-evolution_helper       -> nothing GA related in here. just print to screen methods
+#Evolution class -> Is essentially just a loop which loops over a population passed to it and calls actions on the population. Two forms of evolution are defined; microbial and classic.  
+##EvolutionHelper    -> nothing GA related in here. just print to screen methods
 
