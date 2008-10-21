@@ -1,4 +1,4 @@
-﻿= Object Oriented Genetic Algorithm
+= Object Oriented Genetic Algorithm
   by Jeremy Comer
 
 This is a project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  
