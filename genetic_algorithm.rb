@@ -44,8 +44,4 @@ class GeneticAlgorithm
   end
   alias tree population_tree
 
-  def mean_fit_data
-    examine.results[:stats].map{|s| s[:mean_fit] }
-  end
-
 end
