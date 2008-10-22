@@ -46,7 +46,8 @@ This is really the core of the whole process from the point of producing somethi
 Atm there are just some simple fitness functions e.g. the class "max ones" problem:
   fitness = self.genome.sequence.sum
 or evolving x,y,z for a simultaneous equation, where the genome encodes for x,y,z and the fitness is the error
-see below for more on adding fitness functions
+
+See below for adding fitness functions
 
 ===class Genome
 The Genome class is the container for the genetic material of an individual.  Genome includes the Recombination and Mutator modules to provide functions for genomes based actions. 
@@ -75,7 +76,15 @@ Genome config:
 == Population Monitor
 This class is used to track the populations evolution and keep the code for tracking seperate from the main GA code.  This basiclly just keeps a copy of the population at each step of GA run time.  After the GA has run this class can be asked to respond with information about the populations evolution, including mean fitness over time, the best individual and other things.  
 
-The population moniter was mmade to be a not vital part of the system.  In other word evolution does not depend on it.  However if at the end of the GA execution you want more than just the final population then this is a required component.
+The population monitor was made to be a not vital part of the system.  In other words evolution does not depend on it.  However if at the end of the GA execution you want more than just the final population then this is a required component.  After the GA has run the population monitor has to make the results which is done by calling make on it.  
+
+  ga.population_monitor # returns the PopulationMonitor class without calculating data
+  ga.examine # returns the PopulationMonitor class calling make on it.  Note this will return a large volume of data.
+
+In order to not impinge on GA run time all calculations of results are done post evolution by calling make on the PopulatioMonitor.  The make function generates data and then returns self (the PopulationMonitor)  thus enabling functions to be called inline with make.
+
+  ga.examine.results # output to term info about best solution
+  ga.examine.mean_fitness # return populations mean fitness over generations
 
 == Familiy Tree Maker
 I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.
