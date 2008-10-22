@@ -1,18 +1,21 @@
-= Object Oriented Genetic Algorithm
+= Object Oriented Genetic Algorithm (OOGA!)
   by Jeremy Comer
 
-This is a little project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  What I wanted it to create a GA which was simple to set up to run in a variety of ways with an aim to making an experimental framework.
+This is a little project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  What I wanted to create was a GA which was simple to set up to run in a variety of ways with an aim to making an flexible experimental framework.
 
-== Layout
+== Class Structure
 
 ===GeneticAlgorithm class
-This is just a wrapper for the other classes and provides convenient some methods.
+Really just a wrapper for the other classes and provides convenient some methods.
   ga = GeneticAlgorithm.new
   ga.run
-  ga.mean_fit_data
+  ga.results
 
 It can be passed a config hash when initialized or it will run a default set of options. This config hash is used by the other parts of the program for their options. 
 When GeneticAlgorithm.new is called a Population and PopulationMoniter are created and passed to new Instance of Evolution along with the config
+
+  ga.tick
+Will run a single loop of the GA
 
 ===Evolution class
 Evolution takes a Population as well as configs and PopulationMoniter.  The Evolution class essentially co-ordinates the sequence of actions which occur during a step of the evolutionary process.  It can preform two different evolutionary type atm, microbial and classic. 
@@ -67,9 +70,11 @@ Genome config:
 == Population Monitor
 This class is used to track the populations evolution and keep the code for tracking seperate from the main GA code.  This basiclly just keeps a copy of the population at each step of GA run time.  After the GA has run this class can be asked to respond with information about the populations evolution, including mean fitness over time, the best individual and other things.  
 
+The population moniter was mmade to be a not vital part of the system.  In other word evolution does not depend on it.  However if at the end of the GA execution you want to know what the end populations state was or what the best solution was, then this is a required component.
 
 ==Familiy Tree Maker
-I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point. 
+I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.
+It works of the premise that Individuals know who thier parents are.  When a new Individual is formed from recombination the parents are stored.  As such the family tree maker can be pass one Individual and from it calculate thier liniage.  Out out is to terminal (one with v small font size for it too look ok) but i shall probably make it out put in Why's Shoes.   
 
 
 

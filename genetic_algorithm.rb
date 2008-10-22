@@ -30,18 +30,22 @@ class GeneticAlgorithm
   end
 
   def results
-    @evolution.get_monitor.make.results
+    examine.display_results
+  end
+
+  def examine
+    return @evolution.get_monitor.make
   end
 
   def population_tree
-    t = FamilyTree.new(results[:best])
+    t = FamilyTree.new(examine.results[:best])
     t.make_tree
     t.pp_tree
   end
   alias tree population_tree
 
   def mean_fit_data
-    results[:stats].map{|s| s[:mean_fit] }
+    examine.results[:stats].map{|s| s[:mean_fit] }
   end
 
 end

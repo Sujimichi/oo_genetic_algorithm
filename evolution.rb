@@ -4,6 +4,7 @@
 #standard and microbial evolution
 class Evolution
   include EvolutionHelper
+  attr_accessor :population, :population_monitor
 
   def initialize config, population, population_monitor = nil
     @config = config 
