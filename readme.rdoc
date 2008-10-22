@@ -14,10 +14,10 @@ Really just a wrapper for the other classes and provides convenient some methods
   ga.tick #run a single loop of the GA
 
 It can be passed a config hash when initialized or it will run a default set of options. This config hash is used by the other parts of the program for their options. 
-When GeneticAlgorithm.new is called a Population and PopulationMoniter are created and passed to new Instance of Evolution along with the config
+When GeneticAlgorithm.new is called a Population and PopulationMonitor are created and passed to new Instance of Evolution along with the config
 
 ===class Evolution
-Evolution takes a Population as well as configs and PopulationMoniter.  The Evolution class essentially co-ordinates the sequence of actions which occur during a step of the evolutionary process.  It can preform two different evolutionary type atm, microbial and classic. 
+Evolution takes a Population as well as configs and PopulationMonitor.  The Evolution class essentially co-ordinates the sequence of actions which occur during a step of the evolutionary process.  It can preform two different evolutionary type atm, microbial and classic. 
 
 classic/standard => two Individual's genomes recombine to form new Individual who replaces rand member of population
 microbial => one fitter Individual overwrites a portion (typically >50%) of a weaker members genome
@@ -83,12 +83,14 @@ The population monitor was made to be a not vital part of the system.  In other 
 
 In order to not impinge on GA run time all calculations of results are done post evolution by calling make on the PopulatioMonitor.  The make function generates data and then returns self (the PopulationMonitor)  thus enabling functions to be called inline with make.
 
-  ga.examine.results # output to term info about best solution
+  ga.results # output to term info about best solution
+  ga.examine.results # return raw results data.  NOTE this is a large volume of data + takes TIME to put to screen
+  ga.examine.best # return the best Individual found
   ga.examine.mean_fitness # return populations mean fitness over generations
 
 == Familiy Tree Maker
 I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.
-It works of the premise that Individuals know who thier parents are.  When a new Individual is formed from recombination the parents are stored.  As such the family tree maker can be pass one Individual and from it calculate thier liniage.  Out out is to terminal (one with v small font size for it too look ok) but i shall probably make it out put in Why's Shoes.   
+It works of the premise that Individuals know who their parents are.  When a new Individual is formed from recombination the parents are stored.  As such the family tree maker can be passed one Individual and from it calculate their linage.  Out out is to terminal (one with v small font size for it too look ok) but i shall probably make it out put in Why's Shoes.   
 
 ==Extending OOGA's functionality
 To add for example a new method for mutation simply add the code into the Mutator module and change the values in the config accordingly 
