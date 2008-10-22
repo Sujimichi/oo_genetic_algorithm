@@ -4,7 +4,8 @@
 
 class Individual
   include Fitness
-  attr_accessor :genome
+  attr_accessor :genome, :parents, :name, :dob
+	attr_reader :victories
 
   def initialize config, dna = nil
     @config = config
@@ -17,27 +18,22 @@ class Individual
     @genome = Genome.new @config, dna
   end
 
-  def mutant?
-    self.genome.has_mutated?
+  def fight opponent
+    return self.victorious if (self.fitness > opponent.fitness)
+    return opponent.victorious
   end
 
   def mate partner
     zygote = self.genome.recombine(partner.genome) 
     offspring = Individual.new(@config, zygote)
-    offspring.genome.mutate if apply_mutation? 
+    offspring.genome.mutate if offspring.genome.apply_mutation? 
     offspring.parents= [self, partner]
     offspring
   end
-
   alias fuck mate
 
-  def apply_mutation?
-    self.genome.apply_mutation?
-  end
-
-  def fight opponent
-    return self.victorious if (self.fitness > opponent.fitness)
-    return opponent.victorious
+  def mutant?
+    self.genome.has_mutated?
   end
 
   #Non Essential Functions (allow for gathering information about an individual)
@@ -46,26 +42,6 @@ class Individual
     @victories ||= 0
     @victories += 1
     self
-  end
-
-  def parents= parents
-    @parents = parents
-  end
-
-  def parents
-    @parents
-  end
-
-  def name
-    @name
-  end
-
-  def dob= dob
-    @dob = dob
-  end
-
-  def dob
-    @dob
   end
 
 end

@@ -7,16 +7,15 @@ This is a little project that was started mostly as a self training exercise in 
 
 ===GeneticAlgorithm class
 Really just a wrapper for the other classes and provides convenient some methods.
-  ga = GeneticAlgorithm.new
-  ga.run
-  ga.results
+  ga = GeneticAlgorithm.new(config) 
+  ga.run #run GA for n generations, where n is specified as :generations in the config
+  ga.results #output to term the best solution sumary
+	ga.tick #run a single loop of the GA
 
 It can be passed a config hash when initialized or it will run a default set of options. This config hash is used by the other parts of the program for their options. 
 When GeneticAlgorithm.new is called a Population and PopulationMoniter are created and passed to new Instance of Evolution along with the config
 
-  ga.tick
-Will run a single loop of the GA
-
+  
 ===Evolution class
 Evolution takes a Population as well as configs and PopulationMoniter.  The Evolution class essentially co-ordinates the sequence of actions which occur during a step of the evolutionary process.  It can preform two different evolutionary type atm, microbial and classic. 
 

@@ -1,7 +1,7 @@
 #This class is a rather experimental class designed to gather information
 #about the populations evolution during the running of the algorithm
 class PopulationMonitor
-  attr_accessor :stats, :history
+  attr_accessor :stats, :history, :best, :mutations
 
   def initialize *args
     @args = *args.join(" ")
@@ -37,12 +37,12 @@ class PopulationMonitor
     end
     @stats << {
       :gen_no => @stats.size + 1, 
-      :best_individual => best[:individual], 
+      :best_individual => best[:individual],
       :mean_fit => (running_score / population.size)
     }
   end
 
-  def when_best
+  def when_best_old
     @stats.first[:best_individual].fitness_target ||= 5000
     fitness_target = @stats.first[:best_individual].fitness_target.to_f
     @earliest_occurance = 0
@@ -57,6 +57,16 @@ class PopulationMonitor
     @best = @stats[@earliest_occurance-1][:best_individual]
     @earliest_occurance
   end
+
+	def when_best
+		@best = @stats.first[:best_individual]
+		@stats.each do |generation| 
+			if generation[:best_individual].fitness > best.fitness
+				@best = generation[:best_individual] 
+				@earliest_occurance = generation[:gen_no]
+			end
+		end
+	end
   ##=--------------Data return functions----------------=#	
   def results
     results ={:stats => @stats, :best => @best}
@@ -69,14 +79,18 @@ class PopulationMonitor
   end
   alias best best_individual
 
-  #=--------------Code which outputs to screen----------------=#	
+	def mean_fitness
+		results[:stats].map{|s| s[:mean_fit] }
+	end
+
+  #=--------------Code which outputs to sc	reen----------------=#	
   def display_results
     make
-    show_best
-    show_mutations unless @mutations
+    display_best
+    display_mutations unless @mutations
   end
 
-  def show_best
+  def display_best
     when_best unless @earliest_occurance
     msg = "\n\nWinning Genome\nGenome:   #{@best.genome.sequence.join(", ")}"
     msg << "\nName:\t\t#{@best.name}"
@@ -88,7 +102,7 @@ class PopulationMonitor
     puts msg
   end	
 
-  def show_mutations
+  def display_mutations
     puts "Number of Mutations: #{@mutations}"
   end
   #=-----------------------------------------------------------=#
@@ -106,6 +120,7 @@ class PopulationMonitor
       genome_std << gene_score
     end
     genome_std
+		genome_std.map {|f| i=0; f.each{|t| i+=t}; i} 
   end
 
 
