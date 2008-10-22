@@ -1,24 +1,26 @@
 = Object Oriented Genetic Algorithm (OOGA!)
   by Jeremy Comer
 
-This is a little project that was started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  What I wanted to create was a GA which was simple to set up to run in a variety of ways with an aim to making an flexible experimental framework.
+This was a small project that started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  I wanted to create a GA which was simple to configure to run in a variety of ways, with an aim to making a flexible experimental framework.
 
-== Class Structure
+== Overview
+I have tried to separate the code of this GA in a way which is similar to biological separation.  Thus a Genome has methods for recombination and mutation and a Population has methods for member selection etc.  Every configurable option is set in config hash.
 
-===GeneticAlgorithm class
+===class GeneticAlgorithm
 Really just a wrapper for the other classes and provides convenient some methods.
-  ga = GeneticAlgorithm.new
-  ga.run
-  ga.results
+  ga = GeneticAlgorithm.new(config) 
+  ga.run #run GA for n generations, where n is specified as :generations in the config
+  ga.results #output to term the best solution sumary
+  ga.tick #run a single loop of the GA
 
 It can be passed a config hash when initialized or it will run a default set of options. This config hash is used by the other parts of the program for their options. 
 When GeneticAlgorithm.new is called a Population and PopulationMoniter are created and passed to new Instance of Evolution along with the config
 
-  ga.tick
-Will run a single loop of the GA
-
-===Evolution class
+===class Evolution
 Evolution takes a Population as well as configs and PopulationMoniter.  The Evolution class essentially co-ordinates the sequence of actions which occur during a step of the evolutionary process.  It can preform two different evolutionary type atm, microbial and classic. 
+
+classic/standard => two Individual's genomes recombine to form new Individual who replaces rand member of population
+microbial => one fitter Individual overwrites a portion (typically >50%) of a weaker members genome
 
 The EvolutionHelper module is included in this class but nothing GA related in here, just print to screen methods
 
@@ -26,24 +28,27 @@ Evolution config:
   config ={:generations => Integer, :recomb_method => :string}
 if the recomb_method key contains 'microbial' then microbial evolution is run else classic/standard)
  
-===Population class
+===class Population
 This holds a collection of Individuals and has methods that provide population centric actions such as member selection. 
-The PopulationHelper module is included here and provides more functions to the population class. May be deprecated and contents moved to population class
+The PopulationHelper module is included here and provides more functions to the population class. May get deprecated and contents moved to population class
 
 Population config:
   config ={:population_size => Integer}
 
-===Individual class
-An Individual is the house for a Genome and have functions to facilitate competition and breeding as well as other meta data
-The Fitness module is included to provide a fitness method on an individual which returns a score based on the Individuals Genome and chosen fitness function.
-  ind.fitness
+===class Individual
+An Individual is basically just the vessel for a Genome (what more are we?) and have functions to facilitate competition and breeding as well as other meta data.
+
+The Fitness module is included here and provides the "fitness" method on an individual which returns a score based on the Individuals Genome and chosen fitness function.
+  individual.fitness
 
 ====Fitness module
 This is really the core of the whole process from the point of producing something interesting or worthwhile using a GA.  Which function is called is set in the configs and a fitness function should take a genome and return a score.  
-Atm there is just a set of simple fitness functions e.g. evolve x,y,z for a simultaneous equation
-More can be added....
+Atm there are just some simple fitness functions e.g. the class "max ones" problem:
+  fitness = self.genome.sequence.sum
+or evolving x,y,z for a simultaneous equation, where the genome encodes for x,y,z and the fitness is the error
+see below for more on adding fitness functions
 
-===Genome class
+===class Genome
 The Genome class is the container for the genetic material of an individual.  Genome includes the Recombination and Mutator modules to provide functions for genomes based actions. 
 
 ====Recombination module
@@ -70,12 +75,21 @@ Genome config:
 == Population Monitor
 This class is used to track the populations evolution and keep the code for tracking seperate from the main GA code.  This basiclly just keeps a copy of the population at each step of GA run time.  After the GA has run this class can be asked to respond with information about the populations evolution, including mean fitness over time, the best individual and other things.  
 
-The population moniter was mmade to be a not vital part of the system.  In other word evolution does not depend on it.  However if at the end of the GA execution you want to know what the end populations state was or what the best solution was, then this is a required component.
+The population moniter was mmade to be a not vital part of the system.  In other word evolution does not depend on it.  However if at the end of the GA execution you want more than just the final population then this is a required component.
 
-==Familiy Tree Maker
+== Familiy Tree Maker
 I have also written a basic family tree generator which of a given individual will find their parents and their parents' parents... for 5 generations deep.  Its a bit buggy, in other words it will throw and exception now and again when the data runs out.  Will sort at some point.
 It works of the premise that Individuals know who thier parents are.  When a new Individual is formed from recombination the parents are stored.  As such the family tree maker can be pass one Individual and from it calculate thier liniage.  Out out is to terminal (one with v small font size for it too look ok) but i shall probably make it out put in Why's Shoes.   
 
+==Extending OOGA's functionality
+To add for example a new method for mutation simply add the code into the Mutator module and change the values in the config accordingly 
+  config[:mutate_type] = 'name_of_mutation_method'
+
+
+=====Adding more fitness functions
+I wanted to have a GA where all I really have to think about is the fitness function as this is the most crucial part of the algorithm and often the most tricky.  In fact good fitness function design was described my an AI lecturer as being somewhat of a black art.  The general idea is to encourage (score highly) desirable evolutionary steps whilst discouraging undesirable steps, but being too draconian about these encouragements may prove counter productive.
+
+The nature of evolution is a little BDD in that it tends to go for the simplest thing which works, or is lazy.  E.g when evolving a Neural Net to guide a robot around objects, and selecting for those that move the most and select against those with high collisions the result will most likely be robots that move in small circles.  
 
 
 
