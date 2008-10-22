@@ -1,6 +1,6 @@
 class GeneticAlgorithm
 
-  path = '~/programming/oo_genetic_algorithm/' #homepath
+  path = '~/programming/genetic_algorithm/' #homepath
   require path + 'os_path.rb'
   requires = ['configs.rb', 'modules/evolution_helper.rb','modules/population_helper.rb','modules/recombination.rb','modules/mutator.rb','modules/gene_initializer.rb','modules/simple_array_maths.rb','modules/fitness.rb','evolution.rb','individual.rb','population.rb','family_tree.rb', 'population_monitor.rb', 'genome.rb']
   requires.each do |item|

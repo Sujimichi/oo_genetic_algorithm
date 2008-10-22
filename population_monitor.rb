@@ -43,20 +43,29 @@ class PopulationMonitor
   end
 
   def when_best
-    @stats.first[:best_individual].fitness_target ||= 5000
-    fitness_target = @stats.first[:best_individual].fitness_target.to_f
-    @earliest_occurance = 0
-    for generation in @stats
-      dif = (fitness_target - generation[:best_individual].fitness).abs
-      best_dif ||= dif
-      if dif < best_dif
-        best_dif = dif
+    @best = @stats.first[:best_individual]
+    @stats.each do |generation|
+      if generation[:best_individual].fitness > @best.fitness
+        @best = generation[:best_individual]
         @earliest_occurance = generation[:gen_no]
       end
     end
-    @best = @stats[@earliest_occurance-1][:best_individual]
-    @earliest_occurance
   end
+
+  def calculate_genetic_convergence
+    gene_length = @history.first.first.genome.sequence.size # Not gonna work with variable gene lengths
+    genome_std = []
+    @history.each do |generation|
+      gene_score = []
+      gene_length.times do |i|
+        gene_score[i] = standard_deviation( generation.map {|indiv| indiv.genome.sequence[i] } )
+      end
+      genome_std << gene_score
+    end
+    genome_std.map {|gen| i=0; gen.each {|g| i+=g}; i/gen.size}
+  end
+
+
   ##=--------------Data return functions----------------=#	
   def results
     results ={:stats => @stats, :best => @best}
@@ -68,6 +77,23 @@ class PopulationMonitor
     @best
   end
   alias best best_individual
+
+  def mean_fitness
+    results[:stats].map{|s| s[:mean_fit] }
+  end
+
+  def genetic_convergence
+    calculate_genetic_convergence
+  end
+
+  def converged_at
+    g_conv = calculate_genetic_convergence
+    i = g_conv.last
+    until i != g_conv.last
+      i = g_conv.pop
+    end
+    g_conv.size
+  end
 
   #=--------------Code which outputs to screen----------------=#	
   def display_results
@@ -86,27 +112,17 @@ class PopulationMonitor
 
     msg << "\n#{Array.new(20){"-"}.to_s}\n"
     puts msg
-  end	
+  end
+
+  def show_genetic_convergence
+    puts "population was geneticaly identical at generation #{converged_at}"
+  end
 
   def show_mutations
     puts "Number of Mutations: #{@mutations}"
   end
   #=-----------------------------------------------------------=#
 
-
-
-  def genetic_convergence
-    gene_length = @history.first.first.genome.sequence.size
-    genome_std = []
-    @history.each do |generation|
-      gene_score = []
-      gene_length.times do |i|
-        gene_score[i] = standard_deviation( generation.map {|indiv| indiv.genome.sequence[i] } )
-      end
-      genome_std << gene_score
-    end
-    genome_std
-  end
 
 
   def array_sum arr
