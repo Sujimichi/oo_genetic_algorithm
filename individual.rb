@@ -6,8 +6,8 @@ class Individual
   include Fitness
   attr_accessor :genome, :parents, :name, :dob
 	attr_reader :victories
-
-  def initialize config, dna = nil
+  
+	def initialize config, dna = nil
     @config = config
     @name = (Array.new(3) { ( (rand*(25)).round + 97).chr }).to_s #self.object_id
     init_genome dna

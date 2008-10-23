@@ -2,7 +2,8 @@ class GeneticAlgorithm
 
 #  path = '~/programming/genetic_algorithm/' #homepath
 	path = '~/coding/j_projects/genetic_algorithm/'
-  require path + 'os_path.rb'
+  
+	require path + 'os_path.rb'
   requires = ['configs.rb', 'modules/evolution_helper.rb','modules/population_helper.rb','modules/recombination.rb','modules/mutator.rb','modules/gene_initializer.rb','modules/simple_array_maths.rb','modules/fitness.rb','evolution.rb','individual.rb','population.rb','family_tree.rb', 'population_monitor.rb', 'genome.rb']
   requires.each do |item|
     require OSPath.path(path + item)
@@ -48,6 +49,5 @@ class GeneticAlgorithm
     t.pp_tree
   end
   alias tree population_tree
-
 
 end
