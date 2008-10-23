@@ -7,14 +7,13 @@ class Configs
     {
       :gene_length => 20,
       :gene_type => :binary,
-      :mutate_type => :bit_flip,
       :population_size => 30,
-      :mutation_rate => 0.1,
-      :cross_over_rate => 0.7,
-      :recomb_method => :standard_microbial,
       :generations => 500,
+			:cross_over_rate => 0.7,
+			:mutation_rate => 0.1,
+			:mutate_type => :bit_flip,
+      :recomb_method => :standard_microbial,
       :fitness_function => :max_ones,
-      :fitness_goal => 20
     }
   end
 
@@ -59,7 +58,7 @@ class Configs
       :recomb_method => :rand_point,
       :generations => 1000,
       :fitness_function => :bin_sim_eq_1,
-      #:monitor_population => false
+      :monitor_population => false
     }
   end
 

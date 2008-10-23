@@ -23,14 +23,16 @@ module GeneInitializer
   def random
     genome = Array.new(@gene_length) {|a| a = rand}
   end
+	alias decimal random
 
   def whole_random
-    material = Array.new(@gene_length) {|a| a = rand}
+    material = random
     genome = []
     for m in material
       genome << ( (m * 20).round - 10 )
     end
     genome
   end
+	alias integer whole_random
 
 end
