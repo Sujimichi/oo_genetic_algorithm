@@ -1,7 +1,7 @@
 = Object Oriented Genetic Algorithm (OOGA!)
   by Jeremy Comer
 
-This was a small project that started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  I wanted to create a GA which was simple to configure to run in a variety of ways, with an aim to making a flexible experimental framework.
+This was a small project that started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  The aim has now become to make a GA which was simple to configure to run in a variety of ways, with an aim to having a flexible experimental framework.
 
 == Overview
 I have tried to separate the code of this GA in a way which is similar to biological separation.  Thus a Genome has methods for recombination and mutation and a Population has methods for member selection etc.  Every configurable option is set in config hash.
@@ -72,6 +72,21 @@ Genome config:
     :mutation_rate => float # value 0..1 defining the change of mutation
   }
 
+== Configs
+This OOGA is configurable via the hash passed to it on create.  Keys of this hash are as follows:
+  config = {
+    :gene_length => integer, # number of genes in a genome
+    :gene_type => :symbol, # sets how genes are initialized (:binary, :decimal, :integer, :ones, :zeros)
+    :population_size => integer, # size of population
+    :generations => integer, # number of GA loops to perform
+    :cross_over_rate => float, # 0..1 defining probabilistic genetic cross over.
+    :mutation_rate => float, # 0..1 defines probability of a genome being mutated
+    :mutate_type => symbol, # name of method to be used for mutation e.g (:bit_flip, :decimal_shift, :integer_shift)
+    :shift_strength => integer/float, #required if mutate_type is *_shift.  Sets the strength of the mutation.
+    :fitness_function => symbol # name of method to be used as fitness function eg, :max_ones
+  }
+
+Those keys which take symbols are used to set which methods are used for certain actions.  If a new methods is added to the Mutator, Recombination or Fitness then it is called by being set in the config.
 
 == Population Monitor
 This class is used to track the populations evolution and keep the code for tracking seperate from the main GA code.  This basiclly just keeps a copy of the population at each step of GA run time.  After the GA has run this class can be asked to respond with information about the populations evolution, including mean fitness over time, the best individual and other things.  
