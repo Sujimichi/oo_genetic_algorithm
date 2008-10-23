@@ -1,7 +1,7 @@
 = Object Oriented Genetic Algorithm (OOGA!)
   by Jeremy Comer
 
-This was a small project that started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  I wanted to create a GA which was simple to configure to run in a variety of ways, with an aim to making a flexible experimental framework.
+This was a small project that started mostly as a self training exercise in Ruby.  The Joy of coding in Ruby kinda took over and it became more than I was originally planning.  The aim has now become to make a GA which was simple to configure to run in a variety of ways, with an aim to having a flexible experimental framework.
 
 == Overview
 I have tried to separate the code of this GA in a way which is similar to biological separation.  Thus a Genome has methods for recombination and mutation and a Population has methods for member selection etc.  Every configurable option is set in config hash.
